@@ -2,6 +2,7 @@ package eu.javaspecialists.twitch.broadcast1;
 
 import java.util.*;
 
+// See https://www.linkedin.com/video/live/urn:li:ugcPost:7169345856473653248/
 public class SimpleArrayList<T> implements Iterable<T> {
     private Object[] elements;
     private int size = 0;
