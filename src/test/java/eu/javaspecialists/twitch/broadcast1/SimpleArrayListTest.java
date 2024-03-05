@@ -102,7 +102,7 @@ class SimpleArrayListTest {
         assertThrows(IllegalStateException.class, iterator2::remove);
     }
 
-    //@Test
+    @Test
     void testFifoQueue() {
         long time = System.nanoTime();
         try {

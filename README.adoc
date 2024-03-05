@@ -1,0 +1,18 @@
+= Java Specialists Live on Twitch (and other platforms)
+
+Trying out the idea of streaming live coding, mixed with generative AI. Will
+start with basic data structures and then move on to more fun topics. Let's see
+how well ChatGPT knows The Art of Computer Programming.
+
+Follow me on:
+
+* https://twitter.com/heinzkabutz[Twitter/X]
+* https://linkedin.com/in/heinzkabutz[LinkedIn]
+* https://www.twitch.tv/heinzkabutz[Twitch]
+
+And of course sign up to https://www.javaspecialists.eu[The Java Specialists'
+ Newsletter].
+
+Thanks for watching!
+
+Heinz
