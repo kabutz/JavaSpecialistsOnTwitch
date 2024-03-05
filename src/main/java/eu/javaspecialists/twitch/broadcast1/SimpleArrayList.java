@@ -3,7 +3,7 @@ package eu.javaspecialists.twitch.broadcast1;
 import java.util.*;
 
 // See https://www.linkedin.com/video/live/urn:li:ugcPost:7169345856473653248/
-public class SimpleArrayList<T> implements Iterable<T> {
+public class SimpleArrayList<T> implements SimpleList<T> {
     private Object[] elements;
     private int size = 0;
     private int modCount = 0;
@@ -12,6 +12,7 @@ public class SimpleArrayList<T> implements Iterable<T> {
         elements = new Object[10];
     }
 
+    @Override
     public void add(T element) {
         if (size == elements.length) {
             elements = Arrays.copyOf(elements, 2 * size);
@@ -21,6 +22,7 @@ public class SimpleArrayList<T> implements Iterable<T> {
         modCount++;
     }
 
+    @Override
     public T get(int index) {
         if (index >= size || index < 0) {
             throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
@@ -28,10 +30,12 @@ public class SimpleArrayList<T> implements Iterable<T> {
         return (T)elements[index];
     }
 
+    @Override
     public int size() {
         return size;
     }
 
+    @Override
     public void removeAt(int index) {
         if (index >= size || index < 0) {
             throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);

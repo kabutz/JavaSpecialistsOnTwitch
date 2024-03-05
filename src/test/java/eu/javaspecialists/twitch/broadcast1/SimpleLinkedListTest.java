@@ -1,8 +1,8 @@
 package eu.javaspecialists.twitch.broadcast1;
 
-class SimpleArrayListTest extends SimpleListTest {
+class SimpleLinkedListTest extends SimpleListTest {
     @Override
     protected SimpleList<String> create() {
-        return new SimpleArrayList<>();
+        return new SimpleLinkedList<>();
     }
 }
