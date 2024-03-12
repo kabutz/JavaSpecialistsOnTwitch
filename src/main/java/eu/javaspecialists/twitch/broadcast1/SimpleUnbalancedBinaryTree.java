@@ -1,9 +1,6 @@
 package eu.javaspecialists.twitch.broadcast1;
 
-import java.util.ConcurrentModificationException;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
 /**
  * A simple unbalanced binary tree implementation.
@@ -151,17 +148,32 @@ public class SimpleUnbalancedBinaryTree<T extends Comparable<T>> implements Iter
      * Method to measure the maxDepth of the tree.
      */
     public int maxDepth() {
-        return maxDepth(root);
+        if (root == null) {
+            return 0;
+        }
+
+        var deque = new ArrayDeque<Pair<Node<T>, Integer>>();
+        deque.push(new Pair<>(root, 1));
+        int maxDepth = 0;
+
+        while (!deque.isEmpty()) {
+            Pair<Node<T>, Integer> current = deque.pop();
+            Node<T> node = current.first;
+            int currentDepth = current.second;
+
+            if (node != null) {
+                maxDepth = Math.max(maxDepth, currentDepth);
+                if (node.right != null) {
+                    deque.push(new Pair<>(node.right, currentDepth + 1));
+                }
+                if (node.left != null) {
+                    deque.push(new Pair<>(node.left, currentDepth + 1));
+                }
+            }
+        }
+
+        return maxDepth;
     }
 
-    private int maxDepth(Node<T> node) {
-        if (node == null) {
-            return 0;
-        } else {
-            // compute the maxDepth of each subtree and take the greater one
-            int lDepth = maxDepth(node.left);
-            int rDepth = maxDepth(node.right);
-            return Math.max(lDepth, rDepth) + 1;
-        }
-    }
+    private record Pair<U, V>(U first, V second) {}
 }

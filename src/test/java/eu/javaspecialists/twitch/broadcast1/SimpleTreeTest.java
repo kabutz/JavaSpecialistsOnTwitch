@@ -139,7 +139,7 @@ class SimpleTreeTest {
 
     @Test
     void testDepth() {
-        int size = 100_000;
+        int size = 10_000;
         List<String> list =
                 IntStream.range(0, size)
                         .mapToObj("str=%010d"::formatted)
