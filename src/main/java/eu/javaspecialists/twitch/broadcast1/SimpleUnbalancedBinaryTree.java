@@ -9,7 +9,7 @@ import java.util.Queue;
  * A simple unbalanced binary tree implementation.
  *
  * @param <T> the type of elements in the tree, must implement the
- *           Comparable interface
+ *            Comparable interface
  */
 // see https://www.linkedin.com/video/live/urn:li:ugcPost:7171037281166835712/
 // and https://www.linkedin.com/video/live/urn:li:ugcPost:7171047499154079745/
@@ -54,8 +54,8 @@ public class SimpleUnbalancedBinaryTree<T extends Comparable<T>> implements Iter
             return true;
         }
         return value.compareTo(current.value) < 0
-            ? contains(current.left, value)
-            : contains(current.right, value);
+                ? contains(current.left, value)
+                : contains(current.right, value);
     }
 
     public void remove(T value) {
@@ -87,7 +87,7 @@ public class SimpleUnbalancedBinaryTree<T extends Comparable<T>> implements Iter
                 current.right = remove(current.right, minValue);
                 modCount++;
             }
-}
+        }
 
         return current;
     }
@@ -145,5 +145,23 @@ public class SimpleUnbalancedBinaryTree<T extends Comparable<T>> implements Iter
             size++;
         }
         return size;
+    }
+
+    /**
+     * Method to measure the maxDepth of the tree.
+     */
+    public int maxDepth() {
+        return maxDepth(root);
+    }
+
+    private int maxDepth(Node<T> node) {
+        if (node == null) {
+            return 0;
+        } else {
+            // compute the maxDepth of each subtree and take the greater one
+            int lDepth = maxDepth(node.left);
+            int rDepth = maxDepth(node.right);
+            return Math.max(lDepth, rDepth) + 1;
+        }
     }
 }

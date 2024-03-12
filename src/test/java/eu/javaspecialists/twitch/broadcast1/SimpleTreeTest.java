@@ -3,10 +3,9 @@ package eu.javaspecialists.twitch.broadcast1;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ConcurrentModificationException;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -115,24 +114,37 @@ class SimpleTreeTest {
 
     @Test
     void testUnbalancedContains() {
-        int size = 1_000_000;
+        int size = 10_000;
         List<String> list =
                 // ThreadLocalRandom.current()
-                // .ints(10_000_000, 0, 1_000_000_000)
+                // .ints(size, 0, 1_000_000_000)
                 IntStream.range(0, size)
-                        .mapToObj(i -> "str=" + i)
-                        .toList();
+                        .mapToObj("str=%010d"::formatted)
+                        .collect(Collectors.toList());
+        Collections.shuffle(list, new Random(0));
         list.forEach(simpleTree::add);
-        String search = "str=" + (size - 1);
+        String search = "str=%010d".formatted(size - 1);
         simpleTree.add(search);
+        System.out.println("simpleTree.maxDepth() = " + simpleTree.maxDepth());
         long time = System.nanoTime();
         try {
-            for (int i = 0; i < 10_000_000; i++) {
+            for (int i = 0; i < 100_000; i++) {
                 assertTrue(simpleTree.contains(search));
             }
         } finally {
             time = System.nanoTime() - time;
             System.out.printf("time = %dms%n", (time / 1_000_000));
         }
+    }
+
+    @Test
+    void testDepth() {
+        int size = 100_000;
+        List<String> list =
+                IntStream.range(0, size)
+                        .mapToObj("str=%010d"::formatted)
+                        .collect(Collectors.toList());
+        list.forEach(simpleTree::add);
+        assertEquals(size, simpleTree.maxDepth());
     }
 }
