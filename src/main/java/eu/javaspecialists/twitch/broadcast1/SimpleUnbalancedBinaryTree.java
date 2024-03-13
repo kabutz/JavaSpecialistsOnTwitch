@@ -113,11 +113,12 @@ public class SimpleUnbalancedBinaryTree<T extends Comparable<T>> implements Bina
     public Iterator<T> iterator() {
         return new Iterator<>() {
             private final int expectedModCount = modCount;
-            private final Queue<Node<T>> nodes = new LinkedList<>() {{
+            private final Queue<Node<T>> nodes = new ArrayDeque<>();
+            {
                 if (root != null) {
-                    add(root);
+                    nodes.add(root);
                 }
-            }};
+            }
 
             @Override
             public boolean hasNext() {
@@ -132,6 +133,7 @@ public class SimpleUnbalancedBinaryTree<T extends Comparable<T>> implements Bina
                 if (expectedModCount != modCount) {
                     throw new ConcurrentModificationException();
                 }
+                if (!hasNext()) throw new NoSuchElementException();
                 Node<T> node = nodes.poll();
                 if (node.left != null) nodes.add(node.left);
                 if (node.right != null) nodes.add(node.right);

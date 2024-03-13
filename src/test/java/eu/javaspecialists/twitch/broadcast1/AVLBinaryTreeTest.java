@@ -1,12 +1,12 @@
 package eu.javaspecialists.twitch.broadcast1;
 
-class SimpleUnbalancedBinaryTreeTest extends BinaryTreeTest {
+class AVLBinaryTreeTest extends BinaryTreeTest {
     protected BinaryTree<String> create() {
-        return new SimpleUnbalancedBinaryTree<>();
+        return new AVLBinaryTree<>();
     }
 
     @Override
     protected int expectedMaxDepth(int elements) {
-        return elements;
+        return (int) Math.ceil(Math.log(elements) / Math.log(2));
     }
 }

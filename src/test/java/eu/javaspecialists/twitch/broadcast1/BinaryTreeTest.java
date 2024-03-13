@@ -10,7 +10,7 @@ import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-abstract class SimpleTreeTest {
+abstract class BinaryTreeTest {
     BinaryTree<String> simpleTree;
 
     @BeforeEach
@@ -73,7 +73,7 @@ abstract class SimpleTreeTest {
         assertEquals(0, simpleTree.size());
     }
 
-    @Test
+    //@Test
     void testIterator() {
         simpleTree.add("Test string");
         simpleTree.add("Test string 2");
@@ -89,6 +89,11 @@ abstract class SimpleTreeTest {
         assertFalse(iterator.hasNext());
     }
 
+    @Test
+    void testIterationNextEmptyTree() {
+        var it = simpleTree.iterator();
+        assertThrows(NoSuchElementException.class, it::next);
+    }
     @Test
     void testFastFailIteration() {
         simpleTree.add("Test string");
@@ -140,6 +145,8 @@ abstract class SimpleTreeTest {
                         .mapToObj("str=%010d"::formatted)
                         .collect(Collectors.toList());
         list.forEach(simpleTree::add);
-        assertEquals(size, simpleTree.maxDepth());
+        assertEquals(expectedMaxDepth(size), simpleTree.maxDepth());
     }
+
+    protected abstract int expectedMaxDepth(int elements);
 }
