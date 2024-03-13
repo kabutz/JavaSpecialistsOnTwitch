@@ -10,17 +10,15 @@ import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class SimpleTreeTest {
-    SimpleUnbalancedBinaryTree<String> simpleTree;
+abstract class SimpleTreeTest {
+    BinaryTree<String> simpleTree;
 
     @BeforeEach
     void init() {
         simpleTree = create();
     }
 
-    protected SimpleUnbalancedBinaryTree<String> create() {
-        return new SimpleUnbalancedBinaryTree<>();
-    }
+    protected abstract BinaryTree<String> create();
 
     // @Test
     void testUnbalanced() {
@@ -116,12 +114,9 @@ class SimpleTreeTest {
     void testUnbalancedContains() {
         int size = 10_000;
         List<String> list =
-                // ThreadLocalRandom.current()
-                // .ints(size, 0, 1_000_000_000)
                 IntStream.range(0, size)
                         .mapToObj("str=%010d"::formatted)
                         .collect(Collectors.toList());
-        Collections.shuffle(list, new Random(0));
         list.forEach(simpleTree::add);
         String search = "str=%010d".formatted(size - 1);
         simpleTree.add(search);

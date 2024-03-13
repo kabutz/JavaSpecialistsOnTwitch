@@ -11,10 +11,11 @@ import java.util.*;
 // see https://www.linkedin.com/video/live/urn:li:ugcPost:7171037281166835712/
 // and https://www.linkedin.com/video/live/urn:li:ugcPost:7171047499154079745/
 // and https://www.linkedin.com/video/live/urn:li:ugcPost:7173332983729274880/
-public class SimpleUnbalancedBinaryTree<T extends Comparable<T>> implements Iterable<T> {
+public class SimpleUnbalancedBinaryTree<T extends Comparable<T>> implements BinaryTree<T> {
     private Node<T> root;
     private int modCount = 0;
 
+    @Override
     public void add(T value) {
         modCount++;
         if (root == null) {
@@ -40,6 +41,7 @@ public class SimpleUnbalancedBinaryTree<T extends Comparable<T>> implements Iter
         }
     }
 
+    @Override
     public boolean contains(T value) {
         return contains(root, value);
     }
@@ -56,6 +58,7 @@ public class SimpleUnbalancedBinaryTree<T extends Comparable<T>> implements Iter
                 : contains(current.right, value);
     }
 
+    @Override
     public void remove(T value) {
         root = remove(root, value);
     }
@@ -137,6 +140,7 @@ public class SimpleUnbalancedBinaryTree<T extends Comparable<T>> implements Iter
         };
     }
 
+    @Override
     public int size() {
         int size = 0;
         for (T t : this) {
@@ -148,6 +152,7 @@ public class SimpleUnbalancedBinaryTree<T extends Comparable<T>> implements Iter
     /**
      * Method to measure the maxDepth of the tree.
      */
+    @Override
     public int maxDepth() {
         if (root == null) {
             return 0;
