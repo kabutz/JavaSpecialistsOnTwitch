@@ -142,15 +142,6 @@ public class SimpleUnbalancedBinaryTree<T extends Comparable<T>> implements Bina
         };
     }
 
-    @Override
-    public int size() {
-        int size = 0;
-        for (T t : this) {
-            size++;
-        }
-        return size;
-    }
-
     /**
      * Method to measure the maxDepth of the tree.
      */

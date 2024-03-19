@@ -262,15 +262,6 @@ public class AVLBinaryTree<T extends Comparable<T>> implements BinaryTree<T> {
         }
     }
 
-    @Override
-    public int size() {
-        int size = 0;
-        for (T t : this) {
-            size++;
-        }
-        return size;
-    }
-
     /**
      * Method to measure the maxDepth of the tree.
      */

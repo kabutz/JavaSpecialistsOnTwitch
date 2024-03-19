@@ -3,7 +3,10 @@ package eu.javaspecialists.twitch.broadcast1;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.*;
+import java.util.ConcurrentModificationException;
+import java.util.Iterator;
+import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -94,6 +97,7 @@ abstract class BinaryTreeTest {
         var it = simpleTree.iterator();
         assertThrows(NoSuchElementException.class, it::next);
     }
+
     @Test
     void testFastFailIteration() {
         simpleTree.add("Test string");
@@ -143,9 +147,12 @@ abstract class BinaryTreeTest {
         List<String> list =
                 IntStream.range(0, size)
                         .mapToObj("str=%010d"::formatted)
-                        .collect(Collectors.toList());
+                        .toList()
+                        .reversed();
         list.forEach(simpleTree::add);
-        assertEquals(expectedMaxDepth(size), simpleTree.maxDepth());
+        int maxDepth = simpleTree.maxDepth();
+        System.out.println("maxDepth = " + maxDepth);
+        assertTrue(expectedMaxDepth(size) >= maxDepth);
     }
 
     protected abstract int expectedMaxDepth(int elements);

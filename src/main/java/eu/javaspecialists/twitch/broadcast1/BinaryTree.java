@@ -7,7 +7,13 @@ public interface BinaryTree<T extends Comparable<T>> extends Iterable<T> {
 
     void remove(T value);
 
-    int size();
+    default int size() {
+        int size = 0;
+        for (T t : this) {
+            size++;
+        }
+        return size;
+    }
 
     int maxDepth();
 }
