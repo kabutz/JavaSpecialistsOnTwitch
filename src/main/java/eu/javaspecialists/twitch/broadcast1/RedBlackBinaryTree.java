@@ -1,28 +1,44 @@
 package eu.javaspecialists.twitch.broadcast1;
 
-import java.util.*;
-
 // https://www.linkedin.com/video/live/urn:li:ugcPost:7175910155673366529/
-public class RedBlackBinaryTree<T extends Comparable<T>> implements BinaryTree<T> {
+public class RedBlackBinaryTree<T extends Comparable<T>> extends AbstractBinaryTree<T> {
     private Node<T> root;
-    private int modCount = 0;
+
+    @Override
+    Node<T> root() {
+        return root;
+    }
 
     // Define color constants
     private static final boolean RED = true;
     private static final boolean BLACK = false;
 
-    // Node class is enhanced with a new attribute 'color'
-    private static class Node<T extends Comparable<T>> {
-        T value;
-        Node<T> left;
-        Node<T> right;
+    private static class Node<E extends Comparable<E>> implements AbstractBinaryTree.Node<E> {
+        E value;
+        Node<E> left;
+        Node<E> right;
         boolean color;
 
-        Node(T value) {
+        Node(E value) {
             this.value = value;
             left = null;
             right = null;
             color = RED;
+        }
+
+        @Override
+        public Node<E> left() {
+            return left;
+        }
+
+        @Override
+        public Node<E> right() {
+            return right;
+        }
+
+        @Override
+        public E value() {
+            return value;
         }
     }
 
@@ -84,23 +100,6 @@ public class RedBlackBinaryTree<T extends Comparable<T>> implements BinaryTree<T
         h.color = !h.color;
         h.left.color = !h.left.color;
         h.right.color = !h.right.color;
-    }
-
-    @Override
-    public boolean contains(T value) {
-        return contains(root, value);
-    }
-
-    private boolean contains(Node<T> current, T value) {
-        if (current == null) {
-            return false;
-        }
-        if (value.compareTo(current.value) == 0) {
-            return true;
-        }
-        return value.compareTo(current.value) < 0
-                ? contains(current.left, value)
-                : contains(current.right, value);
     }
 
     @Override
@@ -190,85 +189,6 @@ public class RedBlackBinaryTree<T extends Comparable<T>> implements BinaryTree<T
             return h;
         } else {
             return min(h.left);
-        }
-    }
-
-    /**
-     * Method to measure the maxDepth of the tree.
-     */
-    @Override
-    public int maxDepth() {
-        if (root == null) {
-            return 0;
-        }
-
-        var deque = new ArrayDeque<Pair<Node<T>, Integer>>();
-        deque.push(new Pair<>(root, 1));
-        int maxDepth = 0;
-
-        while (!deque.isEmpty()) {
-            Pair<Node<T>, Integer> current = deque.pop();
-            Node<T> node = current.first;
-            int currentDepth = current.second;
-
-            if (node != null) {
-                maxDepth = Math.max(maxDepth, currentDepth);
-                if (node.right != null) {
-                    deque.push(new Pair<>(node.right, currentDepth + 1));
-                }
-                if (node.left != null) {
-                    deque.push(new Pair<>(node.left, currentDepth + 1));
-                }
-            }
-        }
-
-        return maxDepth;
-    }
-
-    private record Pair<U, V>(U first, V second) {
-    }
-
-    @Override
-    public Iterator<T> iterator() {
-        return new BinaryTreeIterator();
-    }
-
-    private class BinaryTreeIterator implements Iterator<T> {
-        private final int initialModCount = modCount;
-        private final Deque<Node<T>> nodeStack = new ArrayDeque<>();
-
-        {
-            if (root != null) {
-                pushLeftSubtree(root);
-            }
-        }
-
-        private void pushLeftSubtree(Node<T> node) {
-            while (node != null) {
-                nodeStack.push(node);
-                node = node.left;
-            }
-        }
-
-        @Override
-        public boolean hasNext() {
-            return !nodeStack.isEmpty();
-        }
-
-        @Override
-        public T next() {
-            checkForComodification();
-            if (!hasNext()) throw new NoSuchElementException();
-
-            Node<T> nextNode = nodeStack.pop();
-            pushLeftSubtree(nextNode.right);
-
-            return nextNode.value;
-        }
-
-        private void checkForComodification() {
-            if (modCount != initialModCount)
-                throw new ConcurrentModificationException();
         }
     }
 }

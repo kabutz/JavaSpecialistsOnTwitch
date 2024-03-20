@@ -1,7 +1,5 @@
 package eu.javaspecialists.twitch.broadcast1;
 
-import java.util.*;
-
 /**
  * A simple unbalanced binary tree implementation.
  *
@@ -11,9 +9,13 @@ import java.util.*;
 // see https://www.linkedin.com/video/live/urn:li:ugcPost:7171037281166835712/
 // and https://www.linkedin.com/video/live/urn:li:ugcPost:7171047499154079745/
 // and https://www.linkedin.com/video/live/urn:li:ugcPost:7173332983729274880/
-public class SimpleUnbalancedBinaryTree<T extends Comparable<T>> implements BinaryTree<T> {
+public class SimpleUnbalancedBinaryTree<T extends Comparable<T>> extends AbstractBinaryTree<T> {
     private Node<T> root;
-    private int modCount = 0;
+
+    @Override
+    Node<T> root() {
+        return root;
+    }
 
     @Override
     public void add(T value) {
@@ -39,23 +41,6 @@ public class SimpleUnbalancedBinaryTree<T extends Comparable<T>> implements Bina
                 add(current.right, value);
             }
         }
-    }
-
-    @Override
-    public boolean contains(T value) {
-        return contains(root, value);
-    }
-
-    private boolean contains(Node<T> current, T value) {
-        if (current == null) {
-            return false;
-        }
-        if (value.compareTo(current.value) == 0) {
-            return true;
-        }
-        return value.compareTo(current.value) < 0
-                ? contains(current.left, value)
-                : contains(current.right, value);
     }
 
     @Override
@@ -97,82 +82,31 @@ public class SimpleUnbalancedBinaryTree<T extends Comparable<T>> implements Bina
         return node.left == null ? node.value : findMinValue(node.left);
     }
 
-    private static class Node<T extends Comparable<T>> {
-        T value;
-        Node<T> left;
-        Node<T> right;
+    private static class Node<E extends Comparable<E>>
+            implements AbstractBinaryTree.Node<E> {
+        E value;
+        Node<E> left;
+        Node<E> right;
 
-        Node(T value) {
+        Node(E value) {
             this.value = value;
             left = null;
             right = null;
         }
-    }
 
-    @Override
-    public Iterator<T> iterator() {
-        return new Iterator<>() {
-            private final int expectedModCount = modCount;
-            private final Queue<Node<T>> nodes = new ArrayDeque<>();
-            {
-                if (root != null) {
-                    nodes.add(root);
-                }
-            }
-
-            @Override
-            public boolean hasNext() {
-                if (expectedModCount != modCount) {
-                    throw new ConcurrentModificationException();
-                }
-                return !nodes.isEmpty();
-            }
-
-            @Override
-            public T next() {
-                if (expectedModCount != modCount) {
-                    throw new ConcurrentModificationException();
-                }
-                if (!hasNext()) throw new NoSuchElementException();
-                Node<T> node = nodes.poll();
-                if (node.left != null) nodes.add(node.left);
-                if (node.right != null) nodes.add(node.right);
-                return node.value;
-            }
-        };
-    }
-
-    /**
-     * Method to measure the maxDepth of the tree.
-     */
-    @Override
-    public int maxDepth() {
-        if (root == null) {
-            return 0;
+        @Override
+        public AbstractBinaryTree.Node<E> left() {
+            return left;
         }
 
-        var deque = new ArrayDeque<Pair<Node<T>, Integer>>();
-        deque.push(new Pair<>(root, 1));
-        int maxDepth = 0;
-
-        while (!deque.isEmpty()) {
-            Pair<Node<T>, Integer> current = deque.pop();
-            Node<T> node = current.first;
-            int currentDepth = current.second;
-
-            if (node != null) {
-                maxDepth = Math.max(maxDepth, currentDepth);
-                if (node.right != null) {
-                    deque.push(new Pair<>(node.right, currentDepth + 1));
-                }
-                if (node.left != null) {
-                    deque.push(new Pair<>(node.left, currentDepth + 1));
-                }
-            }
+        @Override
+        public AbstractBinaryTree.Node<E> right() {
+            return right;
         }
 
-        return maxDepth;
+        @Override
+        public E value() {
+            return value;
+        }
     }
-
-    private record Pair<U, V>(U first, V second) {}
 }

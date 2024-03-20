@@ -42,7 +42,7 @@ public class SimpleLinkedList<T> implements SimpleList<T> {
         return node(index).item;
     }
 
-   private Node<T> node(int index) {
+    private Node<T> node(int index) {
         if (index < (size >> 1)) {
             Node<T> n = first;
             for (int i = 0; i < index; i++)

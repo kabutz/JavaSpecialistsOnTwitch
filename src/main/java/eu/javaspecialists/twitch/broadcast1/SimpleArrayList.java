@@ -1,6 +1,9 @@
 package eu.javaspecialists.twitch.broadcast1;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.ConcurrentModificationException;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 // See https://www.linkedin.com/video/live/urn:li:ugcPost:7169345856473653248/
 public class SimpleArrayList<T> implements SimpleList<T> {
@@ -27,7 +30,7 @@ public class SimpleArrayList<T> implements SimpleList<T> {
         if (index >= size || index < 0) {
             throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
         }
-        return (T)elements[index];
+        return (T) elements[index];
     }
 
     @Override
